@@ -1,8 +1,13 @@
 package pong;
 
 import java.awt.Point;
+import java.io.File;
 import java.io.Serializable;
 import java.util.Random;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class Box implements Serializable{
 
@@ -23,7 +28,7 @@ public class Box implements Serializable{
     Point[] paddleLoc     ;
 
     int paddleWidth ;
-    int ballRadius = 20;    
+    int ballRadius = 10;    
     private int ballVx, ballVy;
     private Random rand = new Random();
 
@@ -107,13 +112,14 @@ public class Box implements Serializable{
                 successCount +=1;  // In hole but bounces off right paddle
                 ballVx *= -1;
                 ballLoc.x = boxUpperRight.x - ballRadius;
-
+                playSound("hit.wav");
                 System.out.println("In Hole and hits paddle");
             }
             else
             {
                 // In hole and missed by paddle
                 running= false;
+                playSound("point.wav");
                 System.out.println("In Hole and missed by paddle");
             }
         }
@@ -141,6 +147,16 @@ public class Box implements Serializable{
 
     }
     
-    
+    public void playSound(String file) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(file).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+    }
 
 }

@@ -21,6 +21,7 @@ implements GameNet_UserInterface
 {
 
 	public static Graphics g;
+	public int lastSuccessCount = 0;
 	Box box = null;
 	Image offScreenImage=null;
 	Dimension previousSize=null;
@@ -110,6 +111,20 @@ implements GameNet_UserInterface
 				String str ="Success count="+
 						box.successCount+ " Click Mouse to restart";
 				g.drawString(str, 100, 100);
+				
+				if(lastSuccessCount == box.successCount)
+				{
+					//Already ran and set
+				}
+				else
+				{
+					lastSuccessCount = box.successCount;
+					setBackground(Color.BLACK);
+					setForeground(Color.RED);
+					System.out.println("New score");
+				}
+				
+				
 			}
 
 			Point bur = boardDimensions.toPixels(box.boxUpperRight);
@@ -194,5 +209,6 @@ implements GameNet_UserInterface
 		}
 	}
 
+	
 	//****** Done with Inner Classes ***************
 }

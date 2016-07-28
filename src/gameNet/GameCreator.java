@@ -114,7 +114,7 @@ public abstract class GameCreator {
 		if(str == null)
 		{
 			//The user didn't provide input so assume client
-			str = "n";
+			str = "y";
 		}
 		
 	    //Test the server/client selection
