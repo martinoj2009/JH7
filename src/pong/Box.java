@@ -22,6 +22,8 @@ public class Box implements Serializable{
     
     Point rightHoleUpper     ;
     Point rightHoleLower     ;
+    Point leftHoleUpper;
+    Point leftHoleLower;
     
     Point ballLoc       ;
     
@@ -54,6 +56,10 @@ public class Box implements Serializable{
         boxLowerLeft = new Point(box_left, box_bottom);
         rightHoleUpper    = new Point(box_right, box_top);
         rightHoleLower    = new Point(box_right, box_bottom);  
+        
+        //Left side
+        leftHoleUpper    = new Point(box_left, box_top);
+        leftHoleLower    = new Point(box_left, box_bottom); 
         
         /*
          * rightHoleUpper    = new Point(box_right, box_top +(box_bottom-box_top)/4);
