@@ -28,7 +28,7 @@ public class Box implements Serializable{
     Point[] paddleLoc     ;
 
     int paddleWidth ;
-    int ballRadius = 10;    
+    int ballRadius = 15;    
     private int ballVx, ballVy;
     private Random rand = new Random();
 
@@ -52,10 +52,15 @@ public class Box implements Serializable{
         boxUpperLeft = new Point(box_left, box_top);
         boxLowerRight= new Point(box_right, box_bottom);
         boxLowerLeft = new Point(box_left, box_bottom);
-        rightHoleUpper    = new Point(box_right, box_top +(box_bottom-box_top)/4);
-        rightHoleLower    = new Point(box_right, box_top +3*(box_bottom-box_top)/4);      
+        rightHoleUpper    = new Point(box_right, box_top);
+        rightHoleLower    = new Point(box_right, box_bottom);  
+        
+        /*
+         * rightHoleUpper    = new Point(box_right, box_top +(box_bottom-box_top)/4);
+        rightHoleLower    = new Point(box_right, box_top +3*(box_bottom-box_top)/4); 
+         */
 
-        paddleWidth  = (rightHoleLower.y - rightHoleUpper.y)/3;
+        paddleWidth  = (rightHoleLower.y - rightHoleUpper.y)/8;
         setGame(false);
 
     }

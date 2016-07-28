@@ -68,7 +68,7 @@ implements GameNet_UserInterface
 
 	public MyUserInterface()
 	{
-		super("My Pong Game");
+		super("Pong");
 		setSize(800, 400);
 		 setResizable(true);
 		addWindowListener(new Termination());
@@ -99,9 +99,11 @@ implements GameNet_UserInterface
 		boardDimensions.setParms(insets.top+pad, insets.left+pad, 
 				d.width-insets.left-insets.right -2*pad, 
 				d.height-insets.top-insets.bottom -2*pad);
+		
 		if (box == null)
 		{
 			g.drawString("Click Mouse to start", 100,100);
+			
 		}
 		else
 		{
