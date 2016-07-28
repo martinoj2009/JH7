@@ -107,6 +107,7 @@ public class Box implements Serializable{
                 successCount +=1;  // In hole but bounces off right paddle
                 ballVx *= -1;
                 ballLoc.x = boxUpperRight.x - ballRadius;
+
                 System.out.println("In Hole and hits paddle");
             }
             else
@@ -139,5 +140,7 @@ public class Box implements Serializable{
         }
 
     }
+    
+    
 
 }

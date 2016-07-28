@@ -20,6 +20,7 @@ public class MyUserInterface extends JFrame
 implements GameNet_UserInterface
 {
 
+	public static Graphics g;
 	Box box = null;
 	Image offScreenImage=null;
 	Dimension previousSize=null;
@@ -68,7 +69,7 @@ implements GameNet_UserInterface
 	{
 		super("My Pong Game");
 		setSize(800, 400);
-		// setResizable(false);
+		 setResizable(true);
 		addWindowListener(new Termination());
 
 		Mouser m = new Mouser();
@@ -86,7 +87,7 @@ implements GameNet_UserInterface
 			offScreenImage = createImage(d.width, d.height);
 			previousSize = d;
 		}
-		Graphics g = offScreenImage.getGraphics();
+		g = offScreenImage.getGraphics();
 
 		g.setColor(Color.white);
 		g.fillRect(0,0, d.width, d.height);
@@ -108,7 +109,7 @@ implements GameNet_UserInterface
 			{
 				String str ="Success count="+
 						box.successCount+ " Click Mouse to restart";
-				g.drawString(str, 100, 100);            
+				g.drawString(str, 100, 100);
 			}
 
 			Point bur = boardDimensions.toPixels(box.boxUpperRight);

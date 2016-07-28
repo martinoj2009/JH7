@@ -3,6 +3,8 @@ package gameNet;
 
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 
 /**
  The normal class that gets the show on the road looks like the following:
@@ -82,27 +84,49 @@ public abstract class GameCreator {
 	 */
 	public void enterGame(GameNet_UserInterface yourUserInterface)
 	{
-		String playerName;
+		String playerName = null;
 		GamePlayer gamePlayer; 
 		GameControl gameControl = new GameControl(this);
 		
 		Scanner keyboard = new Scanner(System.in);
-		System.out.println("Enter your name:");
-		playerName = keyboard.next();
-	    System.out.println("Server side of game?(y/n)");
-	    String str = keyboard.next();
-	    
+		
+		
+		//Ask for server side or client
+		// prompt the user to enter their name
+		playerName = JOptionPane.showInputDialog(null, "What's your name?", "Player name", JOptionPane.DEFAULT_OPTION);
+		
+		if(playerName == null)
+		{
+			playerName = "Player" + 100 + (int)(Math.random() * 800000); 
+		}
+		
+		String[] answer = { "yes", "no"};
+		
+		//Ask for server or client
+		String str = (String) JOptionPane.showInputDialog(null, 
+		        "Are you the server?",
+		        "Server or client",
+		        JOptionPane.QUESTION_MESSAGE, 
+		        null, 
+		        answer, 
+		        answer[0]);
+		
+		if(str == null)
+		{
+			//The user didn't provide input so assume client
+			str = "n";
+		}
+		
+	    //Test the server/client selection
 	    if (str.charAt(0) == 'y')
 	    {
 	    	gameControl.startServer(); // Start a Server GameControl
 	    }
 	    else
 	    {
-	    	System.out.println("Enter ipaddress:");
-	    	String ipaddr = keyboard.next();
+	    	String ipaddr =  JOptionPane.showInputDialog(null, "Enter the IP Address?", "Connect to server", JOptionPane.DEFAULT_OPTION);
 	    	int port;
-	    	System.out.println("Enter port number:");
-	    	port = keyboard.nextInt();
+	    	port = Integer.parseInt(JOptionPane.showInputDialog(null, "What is the port", "Server port", JOptionPane.DEFAULT_OPTION));
 	    	gameControl.connect_to_server(ipaddr,port);
 	    }
 	    
