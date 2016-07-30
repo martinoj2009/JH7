@@ -70,7 +70,7 @@ implements GameNet_UserInterface
 
 	public MyUserInterface()
 	{
-		super("Pong");
+		super("Air Hokey");
 		setSize(800, 400);
 		setResizable(true);
 		addWindowListener(new Termination());
@@ -85,6 +85,7 @@ implements GameNet_UserInterface
 	public void paint(Graphics theScreen)
 	{
 		Dimension d = getSize();
+		
 		if (offScreenImage==null || !d.equals(previousSize))
 		{
 			offScreenImage = createImage(d.width, d.height);
@@ -133,18 +134,23 @@ implements GameNet_UserInterface
 			Point bul = boardDimensions.toPixels(box.boxUpperLeft);
 			Point blr = boardDimensions.toPixels(box.boxLowerRight);
 			Point bll = boardDimensions.toPixels(box.boxLowerLeft);
-			Point hu  = boardDimensions.toPixels(box.rightHoleUpper);
-			Point hl  = boardDimensions.toPixels(box.rightHoleLower);
+			Point hur  = boardDimensions.toPixels(box.rightHoleUpper);
+			Point hlr  = boardDimensions.toPixels(box.rightHoleLower);
+			Point hul  = boardDimensions.toPixels(box.leftHoleUpper);
+			Point hll = boardDimensions.toPixels(box.leftHoleLower);
 
 			g.drawLine(bll.x, bll.y, blr.x, blr.y); // lower line
-			g.drawLine(bll.x, bll.y, bul.x, bul.y); // left side
+			g.drawLine(bul.x, bul.y, hul.x, hul.y);   // above hole on left
+			g.drawLine(bll.x, bll.y, hll.x, hll.y);   // below hole on left
 			g.drawLine(bul.x,bul.y, bur.x, bur.y);  // top side
-			g.drawLine(bur.x, bur.y, hu.x, hu.y);   // above hole on right
-			g.drawLine(blr.x, blr.y, hl.x, hl.y);   // below hole on right
+			g.drawLine(bur.x, bur.y, hur.x, hur.y);   // above hole on right
+			g.drawLine(blr.x, blr.y, hlr.x, hlr.y);   // below hole on right
+			g.setColor(Color.red);
+			g.fillRect(bur.x/2-5, bur.y, 10, blr.y-bur.y);	// vertical median
 
 			// Changes font design of players' scores to be noticeable
 
-			Font font = new Font("SansSerif", Font.BOLD, 360);
+			Font font = new Font("SansSerif", Font.BOLD, (int)(d.getWidth()*d.getHeight()*0.0006));
 			FontMetrics fontMeasure = getFontMetrics(font);
 			g.setFont(font);
 			g.setColor(Color.lightGray);
@@ -154,7 +160,7 @@ implements GameNet_UserInterface
 			 * Both sizes, when compared to the width and height of Pong playing space,
 			 * assists in centrally positioning scores in each player's half of playing space. */
 
-			String player1Score = box.getPlayer2Score(),
+			String player1Score = box.getPlayer1Score(),
 					player2Score = box.getPlayer2Score();
 			int xPosition_Player1Score = (blr.x/2 - 2 - fontMeasure.stringWidth(player1Score))/2,
 					xPosition_Player2Score = blr.x/2 + (blr.x/2 - 2 - fontMeasure.stringWidth(player2Score))/2,

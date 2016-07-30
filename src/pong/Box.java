@@ -24,15 +24,13 @@ public class Box implements Serializable{
     
     Point rightHoleUpper     ;
     Point rightHoleLower     ;
-    Point leftHoleUpper;
-    Point leftHoleLower;
     
     Point ballLoc       ;
     
     Point[] paddleLoc     ;
 
     int paddleWidth ;
-    int ballRadius = 15;    
+    int ballRadius = 20;    
     private int ballVx, ballVy;
     private Random rand = new Random();
 
@@ -56,6 +54,7 @@ public class Box implements Serializable{
         boxUpperLeft = new Point(box_left, box_top);
         boxLowerRight= new Point(box_right, box_bottom);
         boxLowerLeft = new Point(box_left, box_bottom);
+<<<<<<< .merge_file_EsA4Vh
         
         // Right-side
         rightHoleUpper    = new Point(box_right, box_top);
@@ -69,8 +68,12 @@ public class Box implements Serializable{
          * rightHoleUpper    = new Point(box_right, box_top +(box_bottom-box_top)/4);
         rightHoleLower    = new Point(box_right, box_top +3*(box_bottom-box_top)/4); 
          */
+=======
+        rightHoleUpper    = new Point(box_right, box_top +(box_bottom-box_top)/4);
+        rightHoleLower    = new Point(box_right, box_top +3*(box_bottom-box_top)/4);      
+>>>>>>> .merge_file_JAfJHc
 
-        paddleWidth  = (rightHoleLower.y - rightHoleUpper.y)/8;
+        paddleWidth  = (rightHoleLower.y - rightHoleUpper.y)/3;
         setGame(false);
 
     }
@@ -118,9 +121,10 @@ public class Box implements Serializable{
         {
             if (ballLoc.y <= rightHoleUpper.y || ballLoc.y >= rightHoleLower.y )
             {
-            	// hits wall
+                // hits wall 
                 ballVx *= -1;
                 ballLoc.x = boxUpperRight.x - ballRadius;
+                playSound("hit.wav");
             }
             else if (ballLoc.y >= paddleLoc[0].y-paddleWidth/2 &&
                     ballLoc.y <= paddleLoc[0].y + paddleWidth/2)
@@ -128,12 +132,13 @@ public class Box implements Serializable{
                 successCount +=1;  // In hole but bounces off right paddle
                 ballVx *= -1;
                 ballLoc.x = boxUpperRight.x - ballRadius;
-                playSound("hit.wav");
                 System.out.println("In Hole and hits paddle");
+                playSound("hit.wav");
             }
             else
             {
                 // In hole and missed by paddle
+<<<<<<< .merge_file_EsA4Vh
                 playSound("point.wav");
             	
                 // Determines to which player a scored point will be awarded to
@@ -142,8 +147,11 @@ public class Box implements Serializable{
                 else
                 	this.Player1++;
                 
+=======
+>>>>>>> .merge_file_JAfJHc
                 running= false;
                 System.out.println("In Hole and missed by paddle");
+                playSound("point.wav");
             }
         }
 
