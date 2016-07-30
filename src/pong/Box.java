@@ -14,6 +14,8 @@ public class Box implements Serializable{
 	//generic size
     static final int box_width = 1000; 
     static final int box_height = 500;
+    
+    private int Player1 = 0, Player2 = 0; // Keep count of each player's current score count
 
     Point boxUpperRight ;
     Point boxUpperLeft  ;
@@ -54,10 +56,12 @@ public class Box implements Serializable{
         boxUpperLeft = new Point(box_left, box_top);
         boxLowerRight= new Point(box_right, box_bottom);
         boxLowerLeft = new Point(box_left, box_bottom);
+        
+        // Right-side
         rightHoleUpper    = new Point(box_right, box_top);
         rightHoleLower    = new Point(box_right, box_bottom);  
         
-        //Left side
+        // Left-side
         leftHoleUpper    = new Point(box_left, box_top);
         leftHoleLower    = new Point(box_left, box_bottom); 
         
@@ -91,6 +95,7 @@ public class Box implements Serializable{
         if (startRunning)
             running = true;
     }
+    
     public void setPaddleY(int yLoc, int clientIndex)
     {
         paddleLoc[clientIndex].y =yLoc;
@@ -129,8 +134,15 @@ public class Box implements Serializable{
             else
             {
                 // In hole and missed by paddle
-                running= false;
                 playSound("point.wav");
+            	
+                // Determines to which player a scored point will be awarded to
+                if(ballLoc.x < box_width/2)
+                	this.Player2++;
+                else
+                	this.Player1++;
+                
+                running= false;
                 System.out.println("In Hole and missed by paddle");
             }
         }
@@ -158,6 +170,18 @@ public class Box implements Serializable{
 
     }
     
+    // Assist with display of Player1 score in String when called from MyUserInterface paint method
+    public String getPlayer1Score() {
+    	
+    	return String.valueOf(this.Player1);
+    }
+    
+    // Same as previous routine, but for Player2 score
+    public String getPlayer2Score() {
+    	
+    	return String.valueOf(this.Player2);
+    }
+    
     public void playSound(String file) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(file).getAbsoluteFile());
@@ -169,5 +193,4 @@ public class Box implements Serializable{
             ex.printStackTrace();
         }
     }
-
 }

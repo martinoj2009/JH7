@@ -1,10 +1,9 @@
 package pong;
 
-import gameNet.GameNet_UserInterface;
-import gameNet.GamePlayer;
-
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
@@ -15,6 +14,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+
+import gameNet.GameNet_UserInterface;
+import gameNet.GamePlayer;
 
 public class MyUserInterface extends JFrame
 implements GameNet_UserInterface
@@ -70,7 +72,7 @@ implements GameNet_UserInterface
 	{
 		super("Pong");
 		setSize(800, 400);
-		 setResizable(true);
+		setResizable(true);
 		addWindowListener(new Termination());
 
 		Mouser m = new Mouser();
@@ -81,7 +83,7 @@ implements GameNet_UserInterface
 
 
 	public void paint(Graphics theScreen)
-	{  
+	{
 		Dimension d = getSize();
 		if (offScreenImage==null || !d.equals(previousSize))
 		{
@@ -99,11 +101,11 @@ implements GameNet_UserInterface
 		boardDimensions.setParms(insets.top+pad, insets.left+pad, 
 				d.width-insets.left-insets.right -2*pad, 
 				d.height-insets.top-insets.bottom -2*pad);
-		
+
 		if (box == null)
 		{
 			g.drawString("Click Mouse to start", 100,100);
-			
+
 		}
 		else
 		{
@@ -113,7 +115,7 @@ implements GameNet_UserInterface
 				String str ="Success count="+
 						box.successCount+ " Click Mouse to restart";
 				g.drawString(str, 100, 100);
-				
+
 				if(lastSuccessCount == box.successCount)
 				{
 					//Already ran and set
@@ -124,9 +126,7 @@ implements GameNet_UserInterface
 					setBackground(Color.BLACK);
 					setForeground(Color.RED);
 					System.out.println("New score");
-				}
-				
-				
+				}	
 			}
 
 			Point bur = boardDimensions.toPixels(box.boxUpperRight);
@@ -142,6 +142,29 @@ implements GameNet_UserInterface
 			g.drawLine(bur.x, bur.y, hu.x, hu.y);   // above hole on right
 			g.drawLine(blr.x, blr.y, hl.x, hl.y);   // below hole on right
 
+			// Changes font design of players' scores to be noticeable
+
+			Font font = new Font("SansSerif", Font.BOLD, 360);
+			FontMetrics fontMeasure = getFontMetrics(font);
+			g.setFont(font);
+			g.setColor(Color.lightGray);
+
+			/* Using stringWidth routine of FontMetrics, obtained width size of score.
+			 * Using getAscent routine of FontMetrics, obtained. height size of score.
+			 * Both sizes, when compared to the width and height of Pong playing space,
+			 * assists in centrally positioning scores in each player's half of playing space. */
+
+			String player1Score = box.getPlayer2Score(),
+					player2Score = box.getPlayer2Score();
+			int xPosition_Player1Score = (blr.x/2 - 2 - fontMeasure.stringWidth(player1Score))/2,
+					xPosition_Player2Score = blr.x/2 + (blr.x/2 - 2 - fontMeasure.stringWidth(player2Score))/2,
+					yPosition_PlayerScores = blr.y - (blr.y - fontMeasure.getAscent())/2;
+
+			// Displays individual player scores as part of playing space
+			g.drawString(player1Score, xPosition_Player1Score, yPosition_PlayerScores);
+			g.drawString(player2Score, xPosition_Player2Score, yPosition_PlayerScores);
+
+			g.setColor(Color.black);
 			Point pball = boardDimensions.toPixels(box.ballLoc);
 			int r = boardDimensions.toPixels(box.ballRadius);
 			g.fillOval(pball.x-r, pball.y-r, 2*r, 2*r);
@@ -158,7 +181,7 @@ implements GameNet_UserInterface
 		}
 
 		theScreen.drawImage(offScreenImage, 0,0, this);
-	}    
+	}
 
 	private void exitProgram()
 	{
@@ -211,6 +234,6 @@ implements GameNet_UserInterface
 		}
 	}
 
-	
+
 	//****** Done with Inner Classes ***************
 }

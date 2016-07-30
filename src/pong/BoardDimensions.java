@@ -33,7 +33,4 @@ public class BoardDimensions {
 		int yPixels = (int)(y / scale_height);
 		return yPixels;
 	}
-	
-	
-
 }
