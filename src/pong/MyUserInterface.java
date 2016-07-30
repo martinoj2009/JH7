@@ -32,7 +32,6 @@ implements GameNet_UserInterface
 	String myName;
 	MyGameInput myGameInput = new MyGameInput();
 	int game_top, game_bottom, game_left, game_right;
-	Color[] paddleColors = {Color.green, Color.red};
 	BoardDimensions boardDimensions = new BoardDimensions();
 
 	@Override
@@ -85,7 +84,7 @@ implements GameNet_UserInterface
 	public void paint(Graphics theScreen)
 	{
 		Dimension d = getSize();
-		
+
 		if (offScreenImage==null || !d.equals(previousSize))
 		{
 			offScreenImage = createImage(d.width, d.height);
@@ -103,87 +102,83 @@ implements GameNet_UserInterface
 				d.width-insets.left-insets.right -2*pad, 
 				d.height-insets.top-insets.bottom -2*pad);
 
-		if (box == null)
-		{
-			g.drawString("Click Mouse to start", 100,100);
 
+		Point bur = boardDimensions.toPixels(box.boxUpperRight);
+		Point bul = boardDimensions.toPixels(box.boxUpperLeft);
+		Point blr = boardDimensions.toPixels(box.boxLowerRight);
+		Point bll = boardDimensions.toPixels(box.boxLowerLeft);
+		Point hur  = boardDimensions.toPixels(box.rightHoleUpper);
+		Point hlr  = boardDimensions.toPixels(box.rightHoleLower);
+		Point hul  = boardDimensions.toPixels(box.leftHoleUpper);
+		Point hll = boardDimensions.toPixels(box.leftHoleLower);
+
+		g.drawLine(bll.x, bll.y, blr.x, blr.y); // lower line
+		g.drawLine(bul.x, bul.y, hul.x, hul.y);   // above hole on left
+		g.drawLine(bll.x, bll.y, hll.x, hll.y);   // below hole on left
+		g.drawLine(bul.x,bul.y, bur.x, bur.y);  // top side
+		g.drawLine(bur.x, bur.y, hur.x, hur.y);   // above hole on right
+		g.drawLine(blr.x, blr.y, hlr.x, hlr.y);   // below hole on right
+		g.setColor(Color.red);
+		g.fillRect(bur.x/2-5, bur.y+1, 10, blr.y-1-bur.y);	// vertical median
+
+		// Changes font design of players' scores to be noticeable
+
+		Font font = new Font("SansSerif", Font.BOLD, (int)(d.getWidth()*d.getHeight()*0.0005));
+		FontMetrics fontMeasure = getFontMetrics(font);
+		g.setFont(font);
+		g.setColor(Color.lightGray);
+
+		/* Using stringWidth routine of FontMetrics, obtained width size of score.
+		 * Using getAscent routine of FontMetrics, obtained. height size of score.
+		 * Both sizes, when compared to the width and height of Pong playing space,
+		 * assists in centrally positioning scores in each player's half of playing space. */
+
+		String player1Score = box.getPlayer1Score(),
+				player2Score = box.getPlayer2Score();
+		int xPosition_Player1Score = (blr.x/2 - 2 - fontMeasure.stringWidth(player1Score))/2,
+				xPosition_Player2Score = blr.x/2 + (blr.x/2 - 2 - fontMeasure.stringWidth(player2Score))/2,
+				yPosition_PlayerScores = blr.y - (blr.y - fontMeasure.getAscent())/2;
+
+		// Displays individual player scores as part of playing space
+		g.drawString(player1Score, xPosition_Player1Score, yPosition_PlayerScores);
+		g.drawString(player2Score, xPosition_Player2Score, yPosition_PlayerScores);
+
+		g.setColor(Color.black);
+		Point pball = boardDimensions.toPixels(box.ballLoc);
+		int r = boardDimensions.toPixels(box.ballRadius);
+		g.fillOval(pball.x-r, pball.y-r, 2*r, 2*r);
+
+
+		int paddleWidth = boardDimensions.toPixels(box.paddleWidth);
+		for (int i=0; i < 2; i++)
+		{
+			Point pPaddle =boardDimensions.toPixels( box.paddleLoc[i]);
+			g.setColor(Color.blue); 
+			g.drawLine(pPaddle.x, pPaddle.y-paddleWidth/2,
+					pPaddle.x, pPaddle.y+paddleWidth/2);
 		}
-		else
+
+		if (!box.isRunning())
 		{
+			//String str ="Success count="+ box.successCount+ " Click Mouse to restart";
 
-			if (!box.isRunning())
-			{
-				String str ="Success count="+
-						box.successCount+ " Click Mouse to restart";
-				g.drawString(str, 100, 100);
-
-				if(lastSuccessCount == box.successCount)
-				{
-					//Already ran and set
-				}
-				else
-				{
-					lastSuccessCount = box.successCount;
-					setBackground(Color.BLACK);
-					setForeground(Color.RED);
-					System.out.println("New score");
-				}	
-			}
-
-			Point bur = boardDimensions.toPixels(box.boxUpperRight);
-			Point bul = boardDimensions.toPixels(box.boxUpperLeft);
-			Point blr = boardDimensions.toPixels(box.boxLowerRight);
-			Point bll = boardDimensions.toPixels(box.boxLowerLeft);
-			Point hur  = boardDimensions.toPixels(box.rightHoleUpper);
-			Point hlr  = boardDimensions.toPixels(box.rightHoleLower);
-			Point hul  = boardDimensions.toPixels(box.leftHoleUpper);
-			Point hll = boardDimensions.toPixels(box.leftHoleLower);
-
-			g.drawLine(bll.x, bll.y, blr.x, blr.y); // lower line
-			g.drawLine(bul.x, bul.y, hul.x, hul.y);   // above hole on left
-			g.drawLine(bll.x, bll.y, hll.x, hll.y);   // below hole on left
-			g.drawLine(bul.x,bul.y, bur.x, bur.y);  // top side
-			g.drawLine(bur.x, bur.y, hur.x, hur.y);   // above hole on right
-			g.drawLine(blr.x, blr.y, hlr.x, hlr.y);   // below hole on right
-			g.setColor(Color.red);
-			g.fillRect(bur.x/2-5, bur.y, 10, blr.y-bur.y);	// vertical median
-
-			// Changes font design of players' scores to be noticeable
-
-			Font font = new Font("SansSerif", Font.BOLD, (int)(d.getWidth()*d.getHeight()*0.0006));
-			FontMetrics fontMeasure = getFontMetrics(font);
-			g.setFont(font);
-			g.setColor(Color.lightGray);
-
-			/* Using stringWidth routine of FontMetrics, obtained width size of score.
-			 * Using getAscent routine of FontMetrics, obtained. height size of score.
-			 * Both sizes, when compared to the width and height of Pong playing space,
-			 * assists in centrally positioning scores in each player's half of playing space. */
-
-			String player1Score = box.getPlayer1Score(),
-					player2Score = box.getPlayer2Score();
-			int xPosition_Player1Score = (blr.x/2 - 2 - fontMeasure.stringWidth(player1Score))/2,
-					xPosition_Player2Score = blr.x/2 + (blr.x/2 - 2 - fontMeasure.stringWidth(player2Score))/2,
-					yPosition_PlayerScores = blr.y - (blr.y - fontMeasure.getAscent())/2;
-
-			// Displays individual player scores as part of playing space
-			g.drawString(player1Score, xPosition_Player1Score, yPosition_PlayerScores);
-			g.drawString(player2Score, xPosition_Player2Score, yPosition_PlayerScores);
-
+			Font scroll = new Font("SansSerif", Font.BOLD, 18);
+			g.setFont(scroll);
 			g.setColor(Color.black);
-			Point pball = boardDimensions.toPixels(box.ballLoc);
-			int r = boardDimensions.toPixels(box.ballRadius);
-			g.fillOval(pball.x-r, pball.y-r, 2*r, 2*r);
+			String str = "Click to continue play.";
+			g.drawString(str, 100, 100);
 
-
-			int paddleWidth = boardDimensions.toPixels(box.paddleWidth);
-			for (int i=0; i < 2; i++)
+			if(lastSuccessCount == box.successCount)
 			{
-				Point pPaddle =boardDimensions.toPixels( box.paddleLoc[i]);
-				g.setColor(paddleColors[i]); 
-				g.drawLine(pPaddle.x, pPaddle.y-paddleWidth/2,
-						pPaddle.x, pPaddle.y+paddleWidth/2);
+				//Already ran and set
 			}
+			else
+			{
+				lastSuccessCount = box.successCount;
+				setBackground(Color.BLACK);
+				setForeground(Color.RED);
+				System.out.println("New score");
+			}	
 		}
 
 		theScreen.drawImage(offScreenImage, 0,0, this);
