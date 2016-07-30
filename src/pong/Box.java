@@ -22,15 +22,13 @@ public class Box implements Serializable{
     
     Point rightHoleUpper     ;
     Point rightHoleLower     ;
-    Point leftHoleUpper;
-    Point leftHoleLower;
     
     Point ballLoc       ;
     
     Point[] paddleLoc     ;
 
     int paddleWidth ;
-    int ballRadius = 15;    
+    int ballRadius = 20;    
     private int ballVx, ballVy;
     private Random rand = new Random();
 
@@ -54,19 +52,10 @@ public class Box implements Serializable{
         boxUpperLeft = new Point(box_left, box_top);
         boxLowerRight= new Point(box_right, box_bottom);
         boxLowerLeft = new Point(box_left, box_bottom);
-        rightHoleUpper    = new Point(box_right, box_top);
-        rightHoleLower    = new Point(box_right, box_bottom);  
-        
-        //Left side
-        leftHoleUpper    = new Point(box_left, box_top);
-        leftHoleLower    = new Point(box_left, box_bottom); 
-        
-        /*
-         * rightHoleUpper    = new Point(box_right, box_top +(box_bottom-box_top)/4);
-        rightHoleLower    = new Point(box_right, box_top +3*(box_bottom-box_top)/4); 
-         */
+        rightHoleUpper    = new Point(box_right, box_top +(box_bottom-box_top)/4);
+        rightHoleLower    = new Point(box_right, box_top +3*(box_bottom-box_top)/4);      
 
-        paddleWidth  = (rightHoleLower.y - rightHoleUpper.y)/8;
+        paddleWidth  = (rightHoleLower.y - rightHoleUpper.y)/3;
         setGame(false);
 
     }
@@ -113,9 +102,10 @@ public class Box implements Serializable{
         {
             if (ballLoc.y <= rightHoleUpper.y || ballLoc.y >= rightHoleLower.y )
             {
-            	// hits wall
+                // hits wall 
                 ballVx *= -1;
                 ballLoc.x = boxUpperRight.x - ballRadius;
+                playSound("hit.wav");
             }
             else if (ballLoc.y >= paddleLoc[0].y-paddleWidth/2 &&
                     ballLoc.y <= paddleLoc[0].y + paddleWidth/2)
@@ -123,15 +113,15 @@ public class Box implements Serializable{
                 successCount +=1;  // In hole but bounces off right paddle
                 ballVx *= -1;
                 ballLoc.x = boxUpperRight.x - ballRadius;
-                playSound("hit.wav");
                 System.out.println("In Hole and hits paddle");
+                playSound("hit.wav");
             }
             else
             {
                 // In hole and missed by paddle
                 running= false;
-                playSound("point.wav");
                 System.out.println("In Hole and missed by paddle");
+                playSound("point.wav");
             }
         }
 

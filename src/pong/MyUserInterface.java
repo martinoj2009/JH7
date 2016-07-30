@@ -68,7 +68,7 @@ implements GameNet_UserInterface
 
 	public MyUserInterface()
 	{
-		super("Pong");
+		super("Air Hokey");
 		setSize(800, 400);
 		 setResizable(true);
 		addWindowListener(new Termination());
