@@ -178,8 +178,6 @@ implements GameNet_UserInterface
 			else
 			{
 				lastSuccessCount = box.successCount;
-				setBackground(Color.BLACK);
-				setForeground(Color.RED);
 				System.out.println("New score");
 			}	
 		}
@@ -219,6 +217,11 @@ implements GameNet_UserInterface
 		}
 		public void mousePressed(MouseEvent e)
 		{
+			if(box.isRunning())
+			{
+				return;
+			}
+			
 			myGameInput.setCmd(MyGameInput.MOUSE_PRESSED);
 			if (myGamePlayer != null)
 				myGamePlayer.sendMessage(myGameInput);

@@ -6,6 +6,8 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 
+
+
 /**
  The normal class that gets the show on the road looks like the following:
  
@@ -46,6 +48,9 @@ etc.
  */
 
 public abstract class GameCreator {
+	
+	//Max score of the game
+	public static int scoreLimit; 
 	/**
 	 * createGame must construct and return an instance of your game.  
 	 * 
@@ -110,6 +115,16 @@ public abstract class GameCreator {
 		        null, 
 		        answer, 
 		        answer[0]);
+		
+		String[] limit = { "5", "10", "15", "20"};
+		
+		scoreLimit = Integer.parseInt((String)JOptionPane.showInputDialog(null, 
+		        "Are you the server?",
+		        "Server or client",
+		        JOptionPane.QUESTION_MESSAGE, 
+		        null, 
+		        limit, 
+		        limit[0]));
 		
 		if(str == null)
 		{

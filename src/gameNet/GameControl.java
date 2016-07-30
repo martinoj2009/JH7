@@ -114,6 +114,8 @@ public class GameControl
             
             System.out.println("Starting GameControl Server ipAddress("+ipAddr + 
                 ")  portNum ("+ serverPortNum + ")");
+            
+            
              
         } 
         catch (RuntimeException e)
