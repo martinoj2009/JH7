@@ -88,18 +88,16 @@ class GamePlayerProcess1 extends Thread {
            } 
        catch (Exception e) 
            {
-              System.out.println("GamePlayerProcess1 Err: " + e);
+              System.out.println("Other player disconnected");
            }
        finally 
            {
-             System.out.println("GamePlayerProcess1.run Terminating : " + myIndex);
              try
              { // I'm annoyed that I need try ... catch to keep the compiler happy here
                 out.close();
                 socket.close(); 
                                 
              } catch (Exception e){
-                System.out.println("GamePlayerProcess1.run Exception closing sockets :"+e);
              }          
            }
     }// end of run routine

@@ -96,8 +96,15 @@ implements GameNet_UserInterface
 		//Set title with player name
 		if(myName != null)
 		{
+			if(box.scoreLimit != 0)
+			{
+				setTitle("Pong " + " Player: "+  myName + " Score Limit: " + box.scoreLimit);
+			}
+			else
+			{
+				setTitle("Pong " + " Player: "+  myName);
+			}
 			
-			setTitle("Pong " + " Player: "+  myName);
 		}
 		
 		//Check if reset
@@ -209,13 +216,24 @@ implements GameNet_UserInterface
 			if(lastSuccessCount == box.successCount)
 			{
 				//Already ran and set
+				if(GameCreator.getScoreLimit() != 0)
+				{
+					MyGameInput limit = new MyGameInput();
+					
+					
+					limit.setCmd(MyGameInput.LIMIT);
+					limit.name = Integer.toString(GameCreator.getScoreLimit());
+					
+					//Send message for both server and client
+					myGamePlayer.sendMessage(limit);
+				}
+				
 				
 			}
 			else
 			{
 				
 				lastSuccessCount = box.successCount;
-				System.out.println("New score");
 				System.out.println("Player1: " + box.getPlayer1Score() + " Player2: "  + box.getPlayer2Score());
 				
 				//If the limit hasn't been set

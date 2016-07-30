@@ -41,7 +41,7 @@ class GamePlayerProcess2 extends Thread {
        }
        catch (Exception e) 
            {
-                System.out.println("GamePlayerProcess2.run Err: " + e);
+                System.out.println("Player 2 disconnected.");
                 //e.printStackTrace();
            }
        try
@@ -49,7 +49,6 @@ class GamePlayerProcess2 extends Thread {
                 
                 in.close();
                 sock.close(); 
-                System.out.println("GamePlayerProcess2.run terminating: " +myIndex);
                 
                 mom.removeMe(myIndex); // just remove me
        } catch (Exception e)

@@ -8,6 +8,7 @@ public class MyGameInput implements Serializable{
 	static final int MOUSE_PRESSED=3;
 	static final int MOUSE_MOVED=4;
 	static final int RESET=5;
+	static final int LIMIT=6;
 	
     String name;
     int y_location;
@@ -32,6 +33,11 @@ public class MyGameInput implements Serializable{
     void setScoreLimit(int score)
     {
     	this.scorelimit = score;
+    }
+    
+    MyGameInput()
+    {
+    	
     }
     
    

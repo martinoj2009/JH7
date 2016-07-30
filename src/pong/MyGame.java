@@ -55,6 +55,9 @@ public class MyGame extends GameNet_CoreGame implements Runnable, Serializable {
         case MyGameInput.RESET:
         	box.resetScore = true;
         	break;
+        	
+        case MyGameInput.LIMIT:
+        	box.scoreLimit = Integer.parseInt(myGameInput.name);
         }
         MyGameOutput myGameOutput = new MyGameOutput(this);
         return myGameOutput;
