@@ -14,6 +14,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import gameNet.GameCreator;
 import gameNet.GameNet_UserInterface;
@@ -100,7 +101,15 @@ implements GameNet_UserInterface
 		}
 		
 		//Check if reset
-		reset();
+		try
+		{
+			reset();
+		}
+		catch(Exception ex)
+		{
+			
+		}
+		
 		
 		
 		Dimension d = getSize();
@@ -122,7 +131,13 @@ implements GameNet_UserInterface
 				d.width-insets.left-insets.right -2*pad, 
 				d.height-insets.top-insets.bottom -2*pad);
 
-
+		
+		//Make sure Box isn't null as we need method from that class
+		if(box == null)
+		{
+			return;
+		}
+		
 		Point bur = boardDimensions.toPixels(box.boxUpperRight);
 		Point bul = boardDimensions.toPixels(box.boxUpperLeft);
 		Point blr = boardDimensions.toPixels(box.boxLowerRight);
@@ -214,9 +229,8 @@ implements GameNet_UserInterface
 						
 						reset.setCmd(MyGameInput.RESET);
 						
+						//Send message for both server and client
 						myGamePlayer.sendMessage(reset);
-						
-						//exitProgram(); //What to do here??? I will just exit
 					}
 				}
 				
@@ -289,6 +303,21 @@ implements GameNet_UserInterface
 		{
 			box.resetScore = false;
 			System.out.println("Resetting score");
+			
+			if(Integer.parseInt(box.getPlayer1Score()) > Integer.parseInt(box.getPlayer2Score()))
+			{
+				//default title and icon
+				JOptionPane.showMessageDialog(null,
+				    "Game over. Player 1 won.");
+			}
+			else
+			{
+				//default title and icon
+				JOptionPane.showMessageDialog(null,
+				    "Game over. Player 2 won.");
+			}
+			
+			
 			exitProgram();
 		}
 		

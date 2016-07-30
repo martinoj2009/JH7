@@ -15,6 +15,7 @@ public class MyGame extends GameNet_CoreGame implements Runnable, Serializable {
     
     transient GameControl gameControl;
     
+    
     public void startGame(GameControl g)
     {
         gameControl =g;

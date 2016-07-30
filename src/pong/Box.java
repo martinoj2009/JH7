@@ -2,12 +2,16 @@ package pong;
 
 import java.awt.Point;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Random;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.JOptionPane;
 
 public class Box implements Serializable{
 
@@ -39,6 +43,7 @@ public class Box implements Serializable{
 	int successCount=0;
 	boolean resetScore;
 	private boolean running=false;
+	
 
 	public boolean isRunning()
 	{
@@ -114,6 +119,7 @@ public class Box implements Serializable{
 
 	public void update()
 	{
+		
 		if ( !running)
 			return;
 		ballLoc.x = ballLoc.x + ballVx;
@@ -161,7 +167,7 @@ public class Box implements Serializable{
 				// hits wall 
 				ballVx *= -1;
 				ballLoc.x = boxUpperLeft.x - ballRadius;
-				playSound("hit.wav");
+				playSound("/hit.wav");
 			}
 			else if (ballLoc.y >= paddleLoc[1].y-paddleWidth/2 &&
 					ballLoc.y <= paddleLoc[1].y + paddleWidth/2)
@@ -170,19 +176,19 @@ public class Box implements Serializable{
 				ballVx *= -1;
 				ballLoc.x = boxUpperLeft.x + ballRadius;
 				System.out.println("In Hole and hits paddle");
-				playSound("hit.wav");
+				playSound("/hit.wav");
 			}
 			else
 			{
 				// In hole and missed by paddle
-				playSound("point.wav");
+				playSound("/point.wav");
 
 				// Player2 is awarded a point to their current score
 				this.Player2++;
 
 				running= false;
 				System.out.println("In Hole and missed by paddle");
-				playSound("point.wav");
+				playSound("/point.wav");
 			}
 		}
 
@@ -224,7 +230,14 @@ public class Box implements Serializable{
 
 	public void playSound(String file) {
 		try {
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(file).getAbsoluteFile());
+			URL url = getClass().getResource("./" + file);
+			AudioInputStream ais = AudioSystem.getAudioInputStream(url);
+			Clip clip2 = AudioSystem.getClip();
+			clip2.open(ais);
+			clip2.start();
+			
+			
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(file));
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
 			clip.start();
