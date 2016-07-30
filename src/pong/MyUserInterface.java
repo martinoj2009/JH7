@@ -119,7 +119,7 @@ implements GameNet_UserInterface
 		g.drawLine(bur.x, bur.y, hur.x, hur.y);   // above hole on right
 		g.drawLine(blr.x, blr.y, hlr.x, hlr.y);   // below hole on right
 		g.setColor(Color.red);
-		g.fillRect(bur.x/2-5, bur.y+1, 10, blr.y-1-bur.y);	// vertical median
+		g.fillRect(bur.x/2-2, bur.y+1, 4, blr.y-1-bur.y);	// vertical median
 
 		// Changes font design of players' scores to be noticeable
 
@@ -160,13 +160,16 @@ implements GameNet_UserInterface
 
 		if (!box.isRunning())
 		{
-			//String str ="Success count="+ box.successCount+ " Click Mouse to restart";
-
-			Font scroll = new Font("SansSerif", Font.BOLD, 18);
+			Font scroll = new Font("SansSerif", Font.BOLD, (int)(d.getWidth()*d.getHeight()*0.000075));
 			g.setFont(scroll);
+			fontMeasure = getFontMetrics(scroll);
 			g.setColor(Color.black);
-			String str = "Click to continue play.";
-			g.drawString(str, 100, 100);
+			String continueMessage = "CLICK CONTINUE TO PLAY";
+			int x_continueMessage = (blr.x - fontMeasure.stringWidth(continueMessage))/2,
+					y_continueMessage = blr.y/4;
+			
+			// "CLICK CONTINUE TO PLAY" message display
+			g.drawString(continueMessage, x_continueMessage, y_continueMessage);
 
 			if(lastSuccessCount == box.successCount)
 			{

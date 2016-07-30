@@ -17,21 +17,21 @@ public class Box implements Serializable{
 
 	private int Player1 = 0, Player2 = 0; // Keep count of each player's current score count
 
-	Point boxUpperRight ;
-	Point boxUpperLeft  ;
-	Point boxLowerRight ;
-	Point boxLowerLeft  ;
+	Point boxUpperRight;
+	Point boxUpperLeft;
+	Point boxLowerRight;
+	Point boxLowerLeft;
 
-	Point rightHoleUpper     ;
-	Point rightHoleLower     ;
+	Point rightHoleUpper;
+	Point rightHoleLower;
 	Point leftHoleUpper;
 	Point leftHoleLower;
 
-	Point ballLoc       ;
+	Point ballLoc;
 
-	Point[] paddleLoc     ;
+	Point[] paddleLoc;
 
-	int paddleWidth ;
+	int paddleWidth;
 	int ballRadius = 20;    
 	private int ballVx, ballVy;
 	private Random rand = new Random();
