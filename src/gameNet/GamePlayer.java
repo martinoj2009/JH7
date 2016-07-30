@@ -154,6 +154,7 @@ public class GamePlayer  extends Thread
                 throw new RuntimeException("joinGame socketInput null error");
 
             
+            
                         
             // Put in a pause to allow some time to get the server
             // side thread up.

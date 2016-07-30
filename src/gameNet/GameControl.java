@@ -95,7 +95,7 @@ public class GameControl
      * Note that the actual variable createServer is not actually used. 
      * 
      */
-    void startServer()
+    void startServer(int scoreLimit)
     {          
         try
         {                 

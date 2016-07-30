@@ -104,13 +104,17 @@ class GameServer extends Thread{
                 
                 while (listening)
                 {
+                	System.out.println("Listening");
                     nextSock = serverSocket.accept();
                     System.out.println(nThreadCount +" Another Thread Created");
 
                     // Create a thread to process incoming connection
                     GamePlayerProcess1 gamePlayerChild = new GamePlayerProcess1(nextSock, this, nThreadCount++);
+                    
                     gamePlayers.add(gamePlayerChild );
                     gamePlayerChild .start();
+                    
+                    
                 }
 
                 serverSocket.close();

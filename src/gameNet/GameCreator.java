@@ -49,8 +49,8 @@ etc.
 
 public abstract class GameCreator {
 	
-	//Max score of the game
-	public static int scoreLimit; 
+	static //Max score of the game
+	int scoreLimit; 
 	/**
 	 * createGame must construct and return an instance of your game.  
 	 * 
@@ -116,15 +116,6 @@ public abstract class GameCreator {
 		        answer, 
 		        answer[0]);
 		
-		String[] limit = { "5", "10", "15", "20"};
-		
-		scoreLimit = Integer.parseInt((String)JOptionPane.showInputDialog(null, 
-		        "Are you the server?",
-		        "Server or client",
-		        JOptionPane.QUESTION_MESSAGE, 
-		        null, 
-		        limit, 
-		        limit[0]));
 		
 		if(str == null)
 		{
@@ -135,7 +126,17 @@ public abstract class GameCreator {
 	    //Test the server/client selection
 	    if (str.charAt(0) == 'y')
 	    {
-	    	gameControl.startServer(); // Start a Server GameControl
+	    	//Get and set the score limit if you're server
+			String[] limit = { "5", "10", "15", "20"}; //Limit options
+			scoreLimit = Integer.parseInt((String)JOptionPane.showInputDialog(null, 
+			        "Are you the server?",
+			        "Server or client",
+			        JOptionPane.QUESTION_MESSAGE, 
+			        null, 
+			        limit, 
+			        limit[0]));
+			
+	    	gameControl.startServer(scoreLimit); // Start a Server GameControl
 	    }
 	    else
 	    {
@@ -153,6 +154,11 @@ public abstract class GameCreator {
 	    yourUserInterface.startUserInterface (gamePlayer);
 	    keyboard.close();
 	     
+	}
+	
+	public static int getScoreLimit()
+	{
+		return scoreLimit;
 	}
 
 }

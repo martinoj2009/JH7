@@ -50,6 +50,10 @@ public class MyGame extends GameNet_CoreGame implements Runnable, Serializable {
             if (clientIndex >= 0)
             	box.setPaddleY(myGameInput.y_location, clientIndex);
         	break;
+        	
+        case MyGameInput.RESET:
+        	box.resetScore = true;
+        	break;
         }
         MyGameOutput myGameOutput = new MyGameOutput(this);
         return myGameOutput;

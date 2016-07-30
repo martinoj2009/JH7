@@ -15,6 +15,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+import gameNet.GameCreator;
 import gameNet.GameNet_UserInterface;
 import gameNet.GamePlayer;
 
@@ -29,14 +30,17 @@ implements GameNet_UserInterface
 	Dimension previousSize=null;
 
 	GamePlayer myGamePlayer;
-	String myName;
+	static String myName;
 	MyGameInput myGameInput = new MyGameInput();
 	int game_top, game_bottom, game_left, game_right;
 	BoardDimensions boardDimensions = new BoardDimensions();
 
 	@Override
 	public void receivedMessage(Object ob) {
+		
 		MyGameOutput myGameOutput = (MyGameOutput)ob;
+		
+		
 		// Check to see we were accepted and connected
 		if (myGamePlayer != null)
 		{
@@ -50,6 +54,7 @@ implements GameNet_UserInterface
 				box = myGameOutput.myGame.box;
 				repaint();
 			}
+			
 		}
 		else
 			System.out.println("Getting outputs before we are ready");
@@ -62,14 +67,18 @@ implements GameNet_UserInterface
 		myName = myGamePlayer.getPlayerName();
 		myGameInput.setName( myName);
 		myGameInput.setCmd(MyGameInput.CONNECTING);
+		
 		myGamePlayer.sendMessage(myGameInput);
+		
+		
 	}
 
 
 
 	public MyUserInterface()
 	{
-		super("Air Hokey");
+		super("Pong");
+		
 		setSize(800, 400);
 		setResizable(true);
 		addWindowListener(new Termination());
@@ -83,6 +92,17 @@ implements GameNet_UserInterface
 
 	public void paint(Graphics theScreen)
 	{
+		//Set title with player name
+		if(myName != null)
+		{
+			
+			setTitle("Pong " + " Player: "+  myName);
+		}
+		
+		//Check if reset
+		reset();
+		
+		
 		Dimension d = getSize();
 
 		if (offScreenImage==null || !d.equals(previousSize))
@@ -174,11 +194,32 @@ implements GameNet_UserInterface
 			if(lastSuccessCount == box.successCount)
 			{
 				//Already ran and set
+				
 			}
 			else
 			{
+				
 				lastSuccessCount = box.successCount;
 				System.out.println("New score");
+				System.out.println("Player1: " + box.getPlayer1Score() + " Player2: "  + box.getPlayer2Score());
+				
+				//If the limit hasn't been set
+				if(GameCreator.getScoreLimit() != 0)
+				{
+					if(Integer.parseInt(box.getPlayer1Score()) >= GameCreator.getScoreLimit() || Integer.parseInt(box.getPlayer2Score()) >= GameCreator.getScoreLimit())
+					{
+						System.out.println("Score limit!");
+						
+						MyGameInput reset = new MyGameInput();
+						
+						reset.setCmd(MyGameInput.RESET);
+						
+						myGamePlayer.sendMessage(reset);
+						
+						//exitProgram(); //What to do here??? I will just exit
+					}
+				}
+				
 			}	
 		}
 
@@ -217,6 +258,7 @@ implements GameNet_UserInterface
 		}
 		public void mousePressed(MouseEvent e)
 		{
+			//Stop the user from resetting in the middle of a match
 			if(box.isRunning())
 			{
 				return;
@@ -239,6 +281,17 @@ implements GameNet_UserInterface
 			System.out.println("Client is exitting game");
 			exitProgram();
 		}
+	}
+	
+	public void reset()
+	{
+		if(box.resetScore == true)
+		{
+			box.resetScore = false;
+			System.out.println("Resetting score");
+			exitProgram();
+		}
+		
 	}
 
 

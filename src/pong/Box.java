@@ -32,11 +32,12 @@ public class Box implements Serializable{
 	Point[] paddleLoc;
 
 	int paddleWidth;
-	int ballRadius = 20;    
+	int ballRadius = 15;    
 	private int ballVx, ballVy;
 	private Random rand = new Random();
 
 	int successCount=0;
+	boolean resetScore;
 	private boolean running=false;
 
 	public boolean isRunning()
@@ -84,8 +85,11 @@ public class Box implements Serializable{
 				box_top+ rand.nextInt(box_bottom - box_top));
 
 		// Heuristic for generating random starting velocities ... maybe not the best
-		ballVx = (-50 + (int)(100*Math.random()));
-		ballVy = -50 + (int)(100*Math.random());
+		ballVx = 40;
+		ballVy = 40;
+		
+		//ballVx = (-50 + (int)(100*Math.random()));
+		//ballVy = -50 + (int)(100*Math.random());
 
 		paddleLoc = new Point[2];
 		paddleLoc[0]     = new Point(box_right,( rightHoleUpper.y+rightHoleLower.y)/2);
@@ -136,6 +140,7 @@ public class Box implements Serializable{
 			}
 			else
 			{
+				successCount +=1;
 				// In hole and missed by paddle
 				playSound("point.wav");
 
@@ -202,11 +207,19 @@ public class Box implements Serializable{
 
 		return String.valueOf(this.Player1);
 	}
+	
 
 	// Same as previous routine, but for Player2 score
 	public String getPlayer2Score() {
 
 		return String.valueOf(this.Player2);
+	}
+	
+	public void resetScore()
+	{
+		this.Player1 = 0;
+		this.Player2 = 0;
+		
 	}
 
 	public void playSound(String file) {
